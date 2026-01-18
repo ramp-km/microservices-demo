@@ -78,6 +78,10 @@ spec:
           privileged: false
           readOnlyRootFilesystem: true
         image: loadgenerator
+        ports:
+        - containerPort: 8089
+          name: web-ui
+          protocol: TCP
         env:
         - name: FRONTEND_ADDR
           value: "frontend:80"

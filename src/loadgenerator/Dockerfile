@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM --platform=$BUILDPLATFORM python:3.12.12-alpine@sha256:d82291d418d5c47f267708393e40599ae836f2260b0519dd38670e9d281657f5 AS base
+FROM --platform=linux/amd64 python:3.12.12-alpine@sha256:d82291d418d5c47f267708393e40599ae836f2260b0519dd38670e9d281657f5 AS base
 
 FROM base AS builder
 
@@ -46,4 +46,6 @@ COPY locustfile.py .
 # enable gevent support in debugger
 ENV GEVENT_SUPPORT=True
 
-ENTRYPOINT locust --host="http://${FRONTEND_ADDR}" --headless -u "${USERS:-10}" -r "${RATE:-1}" 2>&1
+EXPOSE 8089
+
+ENTRYPOINT locust --host="http://${FRONTEND_ADDR}" --web-host=0.0.0.0 --web-port=8089 -u "${USERS:-10}" -r "${RATE:-1}" 2>&1
